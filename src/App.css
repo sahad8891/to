@@ -182,3 +182,15 @@
     border-right-color: var(--border);
   }
 }
+
+
+
+.container{
+  display: flex;
+}
+
+.b1{
+  margin-right: 50px;
+  
+}
+
