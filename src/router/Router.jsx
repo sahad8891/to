@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router";
 
-import Home from "../page/home/Home";
-import TodoApp from "../components/todo/TodoApp";
-import About from "../page/about/About";
-import Counter from "../page/counter/Counter";
-import Layout from "../Layout/Layout";
+import Home from "../page/home/Home.jsx";
+import TodoApp from "../components/todo/TodoApp.jsx";
+import About from "../page/about/About.jsx";
+import Counter from "../page/counter/Counter.jsx";
+import Layout from "../Layout/Layout.jsx";
     
     
 export const Router = createBrowserRouter([
