@@ -15,6 +15,7 @@ export default function TodoItem({ task, onEdit, onDelete, onToggle }) {
   return (
     <div className="todo-item" style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap:12}}>
       <div style={{display:'flex', alignItems:'center', gap:12, flex:1}}>
+        <div style={{cursor:'grab', padding:6}} aria-hidden>☰</div>
         <input type="checkbox" checked={task.completed} onChange={() => onToggle(task.id)} aria-label={`Mark ${task.text} completed`} />
         <div style={{flex:1}}>
           {editing ? (

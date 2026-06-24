@@ -147,4 +147,11 @@
 .todo-item .form-input { min-width: 200px; }
 .todo-empty { text-align:center; padding:24px; color:var(--muted); }
 
+/* drag handle */
+.todo-item > div > div[aria-hidden] { opacity:0.8; }
+.todo-item[draggable="true"] { cursor: grab; }
+
+/* Confetti canvas fallback style (if used) */
+.confetti-canvas { position:fixed; left:0; top:0; pointer-events:none; z-index:9999 }
+
 /* End of UI system */

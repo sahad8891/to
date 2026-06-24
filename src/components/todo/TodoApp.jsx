@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import TodoForm from './TodoForm'
 import TodoList from './TodoList'
+import Confetti from './Confetti'
 import FilterButtons from './FilterButtons'
 
 // Main Todo application component
@@ -82,6 +83,8 @@ export default function TodoApp() {
     setTasks((t) => t.map((it) => it.id === id ? { ...it, completed: !it.completed } : it))
   }, [])
 
+  const [celebrate, setCelebrate] = useState(false)
+
   const clearCompleted = () => {
     setTasks((t) => t.filter((it) => !it.completed))
     setMessage({ type: 'success', text: 'Completed tasks cleared.' })
@@ -96,6 +99,19 @@ export default function TodoApp() {
 
   const pendingCount = tasks.filter((t) => !t.completed).length
   const completedCount = tasks.filter((t) => t.completed).length
+
+  // when a task becomes completed, trigger celebration
+  useEffect(() => {
+    if (tasks.length === 0) return
+    const anyRecent = tasks.some((t) => t._justCompleted)
+    if (anyRecent) {
+      setCelebrate(true)
+      const id = setTimeout(() => setCelebrate(false), 1800)
+      // remove the marker
+      setTasks((prev) => prev.map((p) => ({ ...p, _justCompleted: false })))
+      return () => clearTimeout(id)
+    }
+  }, [tasks])
 
   return (
     <div>
@@ -131,7 +147,20 @@ export default function TodoApp() {
             {tasks.length === 0 ? (
               <div className="muted">No tasks yet. Add your first task!</div>
             ) : (
-              <TodoList tasks={filteredTasks} onEdit={editTask} onDelete={deleteTask} onToggle={toggleTask} />
+              <>
+                <TodoList tasks={filteredTasks} onEdit={editTask} onDelete={deleteTask} onToggle={(id) => {
+                  // when toggling to completed mark for celebration
+                  setTasks((t) => t.map((it) => it.id === id ? { ...it, completed: !it.completed, _justCompleted: !it.completed } : it))
+                }} onReorder={(from, to) => {
+                  setTasks((t) => {
+                    const copy = [...t]
+                    const [moved] = copy.splice(from, 1)
+                    copy.splice(to, 0, moved)
+                    return copy
+                  })
+                }} />
+                <Confetti active={celebrate} />
+              </>
             )}
           </>
         )}
