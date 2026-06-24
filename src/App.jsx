@@ -1,42 +1,16 @@
-import { useState } from 'react'
-
-import './App.css'
+import { RouterProvider } from 'react-router'
+import Router from './router/Router'
+import ErrorBoundary from './components/ErrorBoundary'
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  // Wrap the app with ErrorBoundary to prevent the whole app from crashing
+  // if any component throws during render.
   return (
-    <>
-      <section id="center">
-       
-          <h1>Get started</h1>
-         
-        <div className="container">
-          <div className="b1">
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-         +
-        </button>
-        </div>
-        
-        <div className="b2">
-        <button1
-          type="button"         
-           className="counter"
-          onClick={() => setCount((count) => count - 1)}
-        >
-         -
-        </button1>
-        </div>
-        </div>
-        <h1>{count}</h1>
-      </section>
-
-      
-    </>
+    <ErrorBoundary>
+      <div className="app-root">
+        <RouterProvider router={Router} />
+      </div>
+    </ErrorBoundary>
   )
 }
 

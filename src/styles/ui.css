@@ -1,0 +1,150 @@
+/*
+  UI System - Modern, responsive, accessible styles
+  - Scoped under .app-root to reduce global conflicts
+  - Uses CSS variables from index.css for color and typography
+  - Includes responsive grid, flex utilities, buttons, forms, cards, navbar, modal, spinner, dark mode support
+*/
+
+/* Utility / Layout */
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: var(--text);
+  background: var(--bg);
+  font-family: var(--sans);
+}
+
+.ui-container {
+  --container-max: 1126px;
+  width: var(--container-max);
+  max-width: 100%;
+  margin: 0 auto;
+  padding: var(--space-16);
+  box-sizing: border-box;
+}
+
+.ui-row {
+  display: grid;
+  gap: var(--space-16);
+}
+
+/* Responsive grid: 1 col mobile, 2 cols tablet, 3 cols desktop */
+.ui-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-16);
+}
+
+@media (min-width: 640px) {
+  .ui-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .ui-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* NAVBAR */
+.ui-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-12) var(--space-16);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  border-bottom: 1px solid var(--border);
+}
+.ui-nav .brand {
+  display: flex; align-items: center; gap: var(--space-12);
+}
+.ui-nav .brand h1 { font-size: 20px; margin: 0; color: var(--text-h); }
+.ui-nav .nav-links { display:flex; gap:var(--space-8); align-items:center; }
+.ui-nav .nav-links a {
+  text-decoration: none; color: var(--text-h); padding: 8px 12px; border-radius: var(--radius); transition: background var(--transition-fast), transform .12s;
+}
+.ui-nav .nav-links a:hover, .ui-nav .nav-links a:focus { background: var(--accent-bg); transform: translateY(-2px); }
+.ui-nav .nav-toggle { display:none; }
+@media (max-width: 640px) {
+  .ui-nav { padding: var(--space-8); }
+  .ui-nav .nav-links { display:none; }
+  .ui-nav .nav-links[data-open="true"] { display:flex; position:absolute; top:64px; right:16px; background:var(--bg); border:1px solid var(--border); padding:12px; border-radius:12px; box-shadow: var(--card-shadow); flex-direction:column; }
+  .ui-nav .nav-toggle { display:block; }
+}
+
+/* BUTTONS */
+.btn { display:inline-flex; align-items:center; gap:var(--space-8); border:0; cursor:pointer; padding:var(--space-8) var(--space-12); border-radius:var(--radius); font-weight:600; transition: box-shadow var(--transition-fast), transform .12s, background var(--transition-fast); }
+.btn:focus { outline: 3px solid rgba(0,0,0,0.08); outline-offset: 2px; }
+.btn:active { transform: translateY(1px); }
+.btn-ghost { background: transparent; color: var(--text-h); }
+.btn-primary { background: linear-gradient(90deg, var(--accent), var(--accent)); color: white; box-shadow: var(--card-shadow); }
+.btn-outline { background: transparent; border: 1px solid var(--border); }
+.btn-sm { padding:6px 10px; font-size:14px; }
+.btn-lg { padding:12px 18px; font-size:16px; }
+
+/* Focus and accessible states */
+.btn:focus-visible, a:focus-visible, input:focus-visible, button:focus-visible { outline: 3px solid var(--accent-bg); outline-offset: 3px; }
+
+/* FORMS */
+.form { display:flex; flex-direction:column; gap:var(--space-12); }
+.form-field { display:flex; flex-direction:column; gap:var(--space-8); }
+.form-label { font-size:14px; color:var(--text-h); }
+.form-input {
+  padding:var(--space-12); border-radius:calc(var(--radius) - 4px); border:1px solid var(--border); background:transparent; transition:border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.form-input:focus { border-color: var(--accent-border); box-shadow: 0 8px 20px rgba(16,24,40,0.04); }
+.form-input[aria-invalid="true"], .form-input.is-invalid { border-color: #ef4444; background: rgba(239,68,68,0.03); }
+.form-help { font-size:13px; color:var(--muted); }
+.form-error { color:#b91c1c; font-size:13px; }
+.form-success { color:#16a34a; font-size:13px; }
+
+/* CARDS */
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-16);
+  box-shadow: var(--card-shadow);
+}
+.card .card-title { font-size:18px; margin:0 0 8px; color:var(--text-h); }
+.card .card-body { font-size:14px; color:var(--text); }
+
+/* MODAL (simple) */
+.modal-backdrop { position:fixed; inset:0; background: rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; z-index:2000; }
+.modal { width: min(720px, 96%); background: var(--bg); border-radius:var(--radius); padding:var(--space-16); border:1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.35); }
+.modal .modal-close { position:absolute; right:16px; top:16px; background:transparent; border-radius:6px; }
+
+/* LOADER */
+.spinner { width:40px; height:40px; border-radius:50%; border:4px solid rgba(0,0,0,0.06); border-top-color: var(--accent); animation: spin 1s linear infinite; margin:auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* SMALL UI HELPERS */
+.muted { color:var(--text); opacity:0.85; }
+.stack { display:flex; gap:var(--space-12); align-items:center; }
+
+/* Dark-mode friendly overrides use existing variables from index.css */
+
+/* Accessibility: ensure color contrast in interactive states */
+.btn-primary:hover { filter: brightness(0.98); transform: translateY(-2px); }
+
+/* Small responsive tweaks */
+.ui-container { transition: padding var(--transition-fast); }
+@media (max-width: 1024px) {
+  .ui-container { padding: var(--space-12); }
+}
+@media (max-width: 640px) {
+  .ui-container { padding: var(--space-8); }
+  .card { padding: var(--space-12); }
+}
+
+/* Error message styles */
+.error-message { border: 1px solid rgba(245,198,203,1); background: rgba(248,215,218,1); padding: var(--space-12); border-radius: calc(var(--radius) - 4px); }
+.error-message .error-title { display:block; margin-bottom: var(--space-8); font-weight:700; color: #7f1d1d; }
+.error-message .error-body { margin-bottom: var(--space-12); color: #7f1d1d; }
+.error-actions .btn { padding:6px 10px; }
+
+/* Todo-specific tweaks */
+.todo-item { width:100%; }
+.todo-item input[type="checkbox"] { width:18px; height:18px; }
+.todo-item .form-input { min-width: 200px; }
+.todo-empty { text-align:center; padding:24px; color:var(--muted); }
+
+/* End of UI system */
